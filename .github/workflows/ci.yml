@@ -11,7 +11,7 @@ env:
 
 jobs:
   check:
-    name: Strict typing + tests (Godot ${{ env.GODOT_VERSION }})
+    name: Strict typing + tests (Godot 4.7)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
