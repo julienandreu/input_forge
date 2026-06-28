@@ -10,6 +10,8 @@ extends RefCounted
 ## <key> to join" hint is derived from the InputMap defaults, so a rebound join
 ## key would orphan that hint and could silently collide with another zone.
 
+const Cast := preload("res://addons/input_forge/tool/typed_cast.gd")
+
 const PATH: String = "user://input_bindings.cfg"
 
 
@@ -56,16 +58,16 @@ static func load_profile(device: InputForgeDeviceId, defaults: InputForgeBinding
 			if action == profile.join_action:
 				continue
 			var key_name: String = "kb/" + String(action)
-			profile.keyboard[action] = int(cfg.get_value(section, key_name, profile.key_for(action)))
+			profile.keyboard[action] = Cast.to_int(cfg.get_value(section, key_name, profile.key_for(action)))
 	else:
-		profile.joy_axis_x = int(cfg.get_value(section, "axis_x", int(profile.joy_axis_x))) as JoyAxis
-		profile.joy_axis_y = int(cfg.get_value(section, "axis_y", int(profile.joy_axis_y))) as JoyAxis
+		profile.joy_axis_x = Cast.to_int(cfg.get_value(section, "axis_x", int(profile.joy_axis_x))) as JoyAxis
+		profile.joy_axis_y = Cast.to_int(cfg.get_value(section, "axis_y", int(profile.joy_axis_y))) as JoyAxis
 		# Clamp so a hand-edited deadzone >= 1.0 cannot divide-by-zero the
 		# radial rescale in InputForgeDeviceSource.
 		profile.joy_deadzone = clampf(
-			float(cfg.get_value(section, "deadzone", profile.joy_deadzone)), 0.0, 0.9)
+			Cast.to_float(cfg.get_value(section, "deadzone", profile.joy_deadzone)), 0.0, 0.9)
 		for action: StringName in profile.joy_buttons:
 			var button_name: String = "joy/" + String(action)
-			profile.joy_buttons[action] = int(
+			profile.joy_buttons[action] = Cast.to_int(
 				cfg.get_value(section, button_name, profile.joy_button_for(action)))
 	return profile

@@ -7,22 +7,21 @@ config_version=5
 [application]
 
 config/name="Input Forge (dev)"
-config/features=PackedStringArray("4.6")
+config/features=PackedStringArray("4.7")
 
 [debug]
 
 ; Hold the addon to the same strict, typed-GDScript bar it was built with.
-; exclude_addons=false is the 4.6 key; directory_rules is its 4.7 successor - keep
-; both so the gate enforces on either engine.
-gdscript/warnings/exclude_addons=false
+; directory_rules (Godot 4.7) enforces the addon directory under the per-directory
+; GDScript warning rules so untyped/unsafe code in res://addons is an error too.
 gdscript/warnings/directory_rules={
 "res://addons": 1
 }
 gdscript/warnings/untyped_declaration=2
-gdscript/warnings/unsafe_property_access=1
-gdscript/warnings/unsafe_method_access=1
-gdscript/warnings/unsafe_cast=1
-gdscript/warnings/unsafe_call_argument=1
+gdscript/warnings/unsafe_property_access=2
+gdscript/warnings/unsafe_method_access=2
+gdscript/warnings/unsafe_cast=2
+gdscript/warnings/unsafe_call_argument=2
 
 [editor_plugins]
 

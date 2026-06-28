@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Strict validation gate for the Input Forge addon (Godot 4.6).
+# Strict validation gate for the Input Forge addon (Godot 4.7).
 #
 # Godot's --check-only exit code is unreliable, so the authoritative signal is the
 # printed "SCRIPT ERROR / Parse Error" text - we log-scan. With
-# untyped_declaration=2 and exclude_addons=false, untyped code prints a
-# "Warning treated as error".
+# untyped_declaration=2 and the directory_rules gate on res://addons, untyped code
+# prints a "Warning treated as error".
 set -uo pipefail
 
 GODOT="${GODOT:-$(command -v godot4 || command -v godot || true)}"

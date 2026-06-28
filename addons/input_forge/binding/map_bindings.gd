@@ -7,11 +7,13 @@ class_name InputForgeMapBindings
 ##   - RUNTIME (game): read the InputMap singleton.
 ##   - EDITOR (@tool dock, M4): read ProjectSettings "input/<action>" directly,
 ##     because InputMap.action_get_events() returns EDITOR actions inside a
-##     @tool/EditorPlugin context (verified against Godot 4.6 docs).
+##     @tool/EditorPlugin context (verified against Godot 4.7 docs).
 ##
 ## Keyboard "zones" fall straight out of the InputMap: zone N uses the Nth keyboard
 ## event bound to each action (zone 0 = first key, zone 1 = second key, ...). So two
 ## players on one keyboard come from binding two keys per action in the Input Map.
+
+const Cast := preload("res://addons/input_forge/tool/typed_cast.gd")
 
 const NO_KEY: int = 0  # KEY_NONE
 const NO_BUTTON: int = -1  # JOY_BUTTON_INVALID
@@ -39,16 +41,16 @@ static func _events_from_project(action: StringName) -> Array[InputEvent]:
 	var entry: Variant = ProjectSettings.get_setting(setting)
 	if not (entry is Dictionary):
 		return []
-	var dict: Dictionary = entry as Dictionary
+	var dict: Dictionary = Cast.to_dictionary(entry)
 	if not dict.has("events"):
 		return []
 	var raw: Variant = dict["events"]
 	if not (raw is Array):
 		return []
 	var out: Array[InputEvent] = []
-	for item: Variant in raw as Array:
+	for item: Variant in Cast.to_array(raw):
 		if item is InputEvent:
-			out.append(item as InputEvent)
+			out.append(Cast.to_input_event(item))
 	return out
 
 

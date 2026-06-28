@@ -1,0 +1,44 @@
+site_name: Input Forge
+site_description: Multi-device local + online multiplayer input for Godot 4.7
+site_url: https://julienandreu.github.io/input_forge/
+repo_url: https://github.com/julienandreu/input_forge
+repo_name: julienandreu/input_forge
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+
+nav:
+  - Home: index.md
+  - Tutorials: tutorials.md
+  - API reference: api-reference.md
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+
+# docs/images/README.md holds screenshot capture instructions; it is intentionally
+# not part of the published navigation.
+not_in_nav: |
+  images/README.md

@@ -1,6 +1,10 @@
 # Input Forge
 
-A Godot **4.6** plugin for **multi-device local + online multiplayer input**.
+A Godot **4.7** plugin for **multi-device local + online multiplayer input**.
+
+> **Requires Godot 4.7+.** Input Forge 0.2.0 uses the Godot 4.7-native editor
+> dock API and is held to strict, fully typed GDScript. The last Godot 4.6
+> -compatible release is `0.1.0`.
 
 Input Forge turns a shared keyboard (split into key-zones) and any number of
 gamepads into abstract, **action-keyed commands**, configured from the project's
@@ -22,15 +26,15 @@ its per-device binding defaults from those actions.
 
 ## Install
 
-Requires **Godot 4.6.x**.
+Requires **Godot 4.7.x**.
 
 - **Manual:** copy the `addons/input_forge/` folder into your project's `addons/`
   folder, then enable **Input Forge** under `Project > Project Settings > Plugins`.
 - **Asset Library:** install, then enable the plugin.
 
-If your project treats GDScript warnings as errors, set
-`debug/gdscript/warnings/exclude_addons=false` (and, on Godot 4.7+,
-`directory_rules`) so the addon is held to the same standard.
+If your project treats GDScript warnings as errors, set the Godot 4.7
+`debug/gdscript/warnings/directory_rules` so `res://addons` is held to the same
+standard (see this repo's `project.godot` for the exact value).
 
 ## Quick start
 
@@ -70,7 +74,7 @@ API, the network codec details, and the device-prompt provider.
 
 ## Develop / test this repo
 
-The addon is kept to strict, typed GDScript. With Godot 4.6.x on your PATH (or set
+The addon is kept to strict, typed GDScript. With Godot 4.7.x on your PATH (or set
 `$GODOT`):
 
 ```bash
@@ -78,8 +82,10 @@ The addon is kept to strict, typed GDScript. With Godot 4.6.x on your PATH (or s
 godot --headless --path . --script res://test/network_codec.gd   # codec unit test
 ```
 
-`check.sh` type-checks every addon script (the `exclude_addons=false` /
-`directory_rules` settings make untyped declarations hard errors).
+`check.sh` type-checks every addon script; the `directory_rules` setting plus
+`untyped_declaration=2` and `unsafe_*=2` make untyped/unsafe declarations hard
+errors. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the typing contract and how
+unavoidable `Variant` narrowing is quarantined.
 
 ## License
 

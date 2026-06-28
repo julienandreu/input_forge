@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 4.7-only: Input Forge dropped Godot 4.6, so CI runs a single Godot 4.7 leg.
+env:
+  GODOT_VERSION: "4.7"
+
+jobs:
+  check:
+    name: Strict typing + tests (Godot ${{ env.GODOT_VERSION }})
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Godot ${{ env.GODOT_VERSION }} (stable, headless-capable)
+        run: |
+          set -euo pipefail
+          ZIP="Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          URL="https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${ZIP}"
+          echo "Downloading $URL"
+          curl -fL --retry 3 -o godot.zip "$URL"
+          unzip -q godot.zip
+          mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" godot
+          chmod +x godot
+          echo "GODOT=$PWD/godot" >> "$GITHUB_ENV"
+
+      - name: Godot version
+        run: "$GODOT --version"
+
+      - name: Strict parse + typing gate (check.sh)
+        run: ./check.sh
+
+      - name: Negative control - the gate must reject untyped code
+        run: |
+          set -uo pipefail
+          cat > addons/input_forge/_negctl_ci.gd <<'EOF'
+          extends RefCounted
+          func _negctl(a):
+          	return a
+          EOF
+          if ./check.sh; then
+            echo "::error::Warning gate did NOT fail on untyped code (false-green)"; rm -f addons/input_forge/_negctl_ci.gd; exit 1
+          else
+            echo "Gate correctly rejected untyped code."
+          fi
+          rm -f addons/input_forge/_negctl_ci.gd
+
+      - name: Codec unit test
+        run: |
+          OUT=$("$GODOT" --headless --path . --script res://test/network_codec.gd 2>&1) || true
+          echo "$OUT"
+          echo "$OUT" | grep -q "NETWORK CODEC PASSED"
+
+      - name: Netcode example (smoke)
+        run: |
+          OUT=$("$GODOT" --headless --path . --script res://examples/netcode/netcode_demo.gd 2>&1) || true
+          echo "$OUT"
+          echo "$OUT" | grep -q "done"

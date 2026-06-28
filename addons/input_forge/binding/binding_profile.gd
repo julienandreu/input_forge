@@ -25,8 +25,9 @@ extends Resource
 
 
 func key_for(action: StringName) -> int:
-	return int(keyboard.get(action, 0))
+	# Typed-dict indexing is statically `int`; avoids narrowing a Variant from .get().
+	return keyboard[action] if keyboard.has(action) else 0
 
 
 func joy_button_for(action: StringName) -> int:
-	return int(joy_buttons.get(action, -1))
+	return joy_buttons[action] if joy_buttons.has(action) else -1

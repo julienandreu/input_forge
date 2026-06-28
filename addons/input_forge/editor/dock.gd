@@ -7,8 +7,10 @@ extends Control
 ##
 ## All InputMap reads use ProjectSettings "input/*" (the editor-safe source -
 ## InputMap.action_get_events() returns EDITOR actions inside a @tool context,
-## verified Godot 4.6). At runtime the same derivation reads the live InputMap and
+## verified Godot 4.7). At runtime the same derivation reads the live InputMap and
 ## is guaranteed to agree (see test/derive_bindings.gd).
+
+const Cast := preload("res://addons/input_forge/tool/typed_cast.gd")
 
 const NONE_LABEL: String = "(none)"
 
@@ -143,7 +145,7 @@ func _refresh_action_names() -> void:
 func _project_action_names() -> PackedStringArray:
 	var names: PackedStringArray = PackedStringArray()
 	for prop: Dictionary in ProjectSettings.get_property_list():
-		var setting: String = String(prop.get("name", ""))
+		var setting: String = Cast.to_str(prop.get("name", ""))
 		if setting.begins_with("input/"):
 			names.append(setting.substr("input/".length()))
 	names.sort()
@@ -318,13 +320,13 @@ func _describe(action_set: InputForgeActionSet) -> String:
 		var bindings: Dictionary = InputForgeMapBindings.keyboard_zone(action_set, zone, true)
 		lines.append("  [b]Zone %d[/b]" % zone)
 		for action: Variant in bindings:
-			var key: int = int(bindings[action])
-			lines.append("    %s = %s" % [String(action), OS.get_keycode_string(key as Key)])
+			var key: int = Cast.to_int(bindings[action])
+			lines.append("    %s = %s" % [Cast.to_str(action), OS.get_keycode_string(key as Key)])
 	lines.append("")
 	lines.append("[b]Joypad buttons:[/b]")
 	var joy: Dictionary = InputForgeMapBindings.joypad_buttons(action_set, true)
 	if joy.is_empty():
 		lines.append("  (none)")
 	for action: Variant in joy:
-		lines.append("    %s = button %d" % [String(action), int(joy[action])])
+		lines.append("    %s = button %d" % [Cast.to_str(action), Cast.to_int(joy[action])])
 	return "\n".join(lines)

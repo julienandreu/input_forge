@@ -1,6 +1,6 @@
 # Input Forge
 
-A Godot **4.6** editor plugin for **multi-device local + online multiplayer input**.
+A Godot **4.7** editor plugin for **multi-device local + online multiplayer input**.
 
 Input Forge turns a shared keyboard (split into key-zones) and any number of
 gamepads into abstract, **action-keyed commands**, configured from the project's
@@ -9,8 +9,10 @@ plugin. It provides per-device polling, lobby join/leave, runtime rebinding,
 persistence, and a packet-loss-safe command codec for streaming input to an
 authoritative server.
 
-Requires **Godot 4.6.x**. (Godot's `plugin.cfg` has no engine-version field; this
-is the supported range. The plugin avoids APIs added after 4.6.)
+Requires **Godot 4.7+**. (Godot's `plugin.cfg` has no engine-version field, so the
+4.7 floor is enforced via the Asset Library minimum-version metadata. The plugin
+uses the Godot 4.7-native `EditorDock` API; the last 4.6-compatible release is
+`0.1.0`.)
 
 ## Why it exists
 
@@ -24,9 +26,9 @@ its per-device binding defaults from those actions.
 1. Copy `addons/input_forge/` into your project's `addons/` folder.
 2. Enable **Input Forge** under `Project > Project Settings > Plugins`.
 
-If you keep typed GDScript as errors, also set
-`debug/gdscript/warnings/exclude_addons=false` (and, on Godot 4.7+,
-`directory_rules`) so the addon is held to the same standard.
+If you keep typed GDScript as errors, also set the Godot 4.7
+`debug/gdscript/warnings/directory_rules` so `res://addons` is held to the same
+standard (see this repo's `project.godot`).
 
 ## Configure via the InputMap
 

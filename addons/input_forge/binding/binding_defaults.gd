@@ -3,6 +3,8 @@ class_name InputForgeBindingDefaults
 ## keeps device defaults in one source of truth: edit the InputMap and the couch
 ## keyboard zones / gamepad button defaults follow.
 
+const Cast := preload("res://addons/input_forge/tool/typed_cast.gd")
+
 
 ## Keyboard key-zone profiles, in InputMap order. A zone's index doubles as the
 ## KEYBOARD InputForgeDeviceId.index.
@@ -46,7 +48,7 @@ static func _typed_bindings(raw: Dictionary) -> Dictionary[StringName, int]:
 	var bindings: Dictionary[StringName, int] = {}
 	for key: Variant in raw:
 		if key is StringName:
-			bindings[key as StringName] = int(raw[key])
+			bindings[Cast.to_string_name(key)] = Cast.to_int(raw[key])
 		elif key is String:
-			bindings[StringName(String(key))] = int(raw[key])
+			bindings[StringName(Cast.to_str(key))] = Cast.to_int(raw[key])
 	return bindings

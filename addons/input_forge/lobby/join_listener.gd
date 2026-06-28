@@ -131,7 +131,8 @@ func _try_claim(device: InputForgeDeviceId, profile: InputForgeBindingProfile) -
 func _join_key(profile: InputForgeBindingProfile) -> int:
 	if profile == null or profile.join_action == &"":
 		return 0
-	return int(profile.keyboard.get(profile.join_action, 0))
+	# Typed-dict indexing is statically `int`; avoids narrowing a Variant from .get().
+	return profile.keyboard[profile.join_action] if profile.keyboard.has(profile.join_action) else 0
 
 
 func _release(device: InputForgeDeviceId) -> void:

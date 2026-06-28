@@ -51,7 +51,8 @@ func button_index(action: StringName) -> int:
 	if _index_cache.is_empty() and not buttons.is_empty():
 		for i: int in buttons.size():
 			_index_cache[buttons[i]] = i
-	return int(_index_cache.get(action, -1))
+	# Typed-dict indexing is statically `int`; avoids narrowing a Variant from .get().
+	return _index_cache[action] if _index_cache.has(action) else -1
 
 
 ## Number of button actions (== number of bits used by command bitmasks).
