@@ -23,6 +23,13 @@ Optional but nice:
 3. **`couch-coop.png` / `couch-coop.gif`** - the `examples/couch_coop` scene
    running with two or more squares joined and moving.
 
+## Social preview
+
+`social-preview.png` (1280x640) is the GitHub Open Graph / social card image (the
+preview shown when the repo link is shared). GitHub has no API for this, so upload
+it once via the web UI: **repo Settings > General > Social preview > Edit > Upload
+an image**.
+
 ## Conventions
 
 - PNG, trimmed to the relevant UI, reasonable width (<= ~1600px).
