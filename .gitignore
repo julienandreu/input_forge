@@ -1,0 +1,11 @@
+# Godot 4+ editor cache and import data (regenerated on open).
+.godot/
+
+# Godot exports.
+export_presets.cfg
+/build/
+/export/
+
+# OS / editor cruft.
+.DS_Store
+*.swp

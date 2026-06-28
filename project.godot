@@ -1,0 +1,29 @@
+; Engine configuration file for the Input Forge plugin development project.
+; This minimal project exists only to develop and test the addon in isolation.
+; Consumers do not need it - they just copy addons/input_forge/ into their game.
+
+config_version=5
+
+[application]
+
+config/name="Input Forge (dev)"
+config/features=PackedStringArray("4.6")
+
+[debug]
+
+; Hold the addon to the same strict, typed-GDScript bar it was built with.
+; exclude_addons=false is the 4.6 key; directory_rules is its 4.7 successor - keep
+; both so the gate enforces on either engine.
+gdscript/warnings/exclude_addons=false
+gdscript/warnings/directory_rules={
+"res://addons": 1
+}
+gdscript/warnings/untyped_declaration=2
+gdscript/warnings/unsafe_property_access=1
+gdscript/warnings/unsafe_method_access=1
+gdscript/warnings/unsafe_cast=1
+gdscript/warnings/unsafe_call_argument=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/input_forge/plugin.cfg")
